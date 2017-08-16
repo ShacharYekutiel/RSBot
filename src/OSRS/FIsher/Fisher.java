@@ -6,6 +6,7 @@ import OSRS.FIsher.Actions.Fish;
 import OSRS.FIsher.Actions.Walk;
 import OSRS.FIsher.Utils.Task;
 import OSRS.FIsher.Utils.Variables;
+import org.powerbot.script.Condition;
 import org.powerbot.script.MessageEvent;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.Script;
@@ -13,10 +14,12 @@ import org.powerbot.script.rt4.ClientContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 @Script.Manifest(name = "Fisher", description = "AIO Fisher", properties = "Client 4")
 public class Fisher extends PollingScript<ClientContext> {
     List<Task> taskList = new ArrayList<Task>();
+    public static boolean guiWait = false;
 
     @Override
     public void poll() {
@@ -34,16 +37,22 @@ public class Fisher extends PollingScript<ClientContext> {
     }
     @Override
     public void start() {
+        while (guiWait) {
+            Condition.wait(new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    return !guiWait;
+                }
+            });
+        }
         Variables.rodID = Variables.Small_Net_ID;
         Variables.method = "Net";
         Variables.fishID = Variables.Shrimp_ID;
         Variables.spot = Variables.Shrimp_Spot;
         Variables.fishingArea = Variables.Lumbridge_Swamp;
         Variables.bankArea = Variables.Lumbridge_Castle;
-        /*
-        if (Variables.powerFish) { taskList.add(new Drop(ctx)); }
-         */
-        taskList.add(new Bank(ctx));
+        taskList.add(new Drop(ctx));
+        //taskList.add(new Bank(ctx));
         taskList.add(new Walk(ctx));
         taskList.add(new Fish(ctx));
         Variables.pathToBank = Variables.Lumbridge_Swamp_To_Castle;

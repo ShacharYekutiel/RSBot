@@ -7,8 +7,14 @@ import org.powerbot.script.Tile;
 public class Variables {
     //Fishing Spots
     public static final int Shrimp_Spot = 1530;
+    //Rods
     public static final int Small_Net_ID = 303;
+
+    //Fishes
     public static final int Shrimp_ID = 317;
+    public static final int Sardine_ID = 327;
+    public static final int Anchovie_ID = 321;
+    public static final int Herring_ID = 345;
 
 
 
@@ -30,7 +36,9 @@ public class Variables {
     //Areas
     //Spots area
     public static final Area Lumbridge_Swamp = new Area(new Tile(3245, 3156, 0), new Tile(3240, 3142, 0));
+    public static final Area Draynor = new Area(new Tile(3088, 3225, 0), new Tile(3081, 3238, 0));
     //Banks area
     public static final Area Lumbridge_Castle = new Area(new Tile(3208, 3216, 0), new Tile(3208, 3223,0));
+    public static final Area Draynor_Village = new Area(new Tile(3097, 3240, 0), new Tile(3088, 3246, 0));
     //Methods
 }

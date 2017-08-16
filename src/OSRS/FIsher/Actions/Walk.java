@@ -3,6 +3,7 @@ package OSRS.FIsher.Actions;
 import OSRS.FIsher.Utils.Task;
 import OSRS.FIsher.Utils.Variables;
 import OSRS.FIsher.Utils.Walker;
+import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
 
