@@ -4,8 +4,13 @@
 
 package OSRS.FIsher;
 
+import OSRS.FIsher.Utils.Variables;
+import com.sun.deploy.util.ArrayUtil;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle;
@@ -15,35 +20,124 @@ import javax.swing.border.*;
  * @author shachar yekutiel
  */
 public class GUI extends JFrame {
+    public static String spot;
+    public static String name;
     public GUI() {
         initComponents();
     }
 
     private void locationItemStateChanged(ItemEvent e) {
         String item = e.getItem().toString();
-        if (item.contains("Lumbridge")) {
+        if (item.contains("Lumbridge Swamp")) {
+            fish.setModel(new DefaultComboBoxModel(new String[] {
+                    "Shrimps & Anchovies",
+                    "Sardines & Herrnigs",
+                    "Trout & Salmons",
+                    "Rainbow fishes",
+                    "Pikes",
+                    "Angler fishes"
+            }));
+        }
+        else if (item.contains("Draynor village")) {
             fish.setModel(new DefaultComboBoxModel(new String[] {
                     "Shrimps & Anchovies",
                     "Sardines & Herrnigs"
             }));
         }
+        else if (item.contains("Al-Kharid")) {
+            fish.setModel(new DefaultComboBoxModel(new String[] {
+                    "Shrimps & Anchovies",
+                    "Sardines & Herrnigs"
+            }));
+        }
+        else if (item.contains("Catherby")) {
+            fish.setModel(new DefaultComboBoxModel(new String[] {
+                    "Shrimps & Anchovies",
+                    "Sardines & Herrnigs",
+                    "Lobsters",
+                    "Tunas & Swordfishes",
+                    "Mackerels, Cods & Brass",
+                    "Sharks"
+            }));
+        }
+        else if (item.contains("Karamja")) {
+            fish.setModel(new DefaultComboBoxModel(new String[] {
+                    "Lobsters",
+                    "Tunas & Swordfishes",
+            }));
+        }
+        else if (item.contains("Fishing Guild")) {
+            fish.setModel(new DefaultComboBoxModel(new String[] {
+                    "Trouts & Salmons",
+                    "Rainbow fishes",
+                    "Pikes",
+                    "Angler fishes",
+                    "Lobsters",
+                    "Tunas & Swordfishes",
+                    "Mackerels, Cods & Brass",
+                    "Sharks"
+            }));
+        }
+        else if (item.contains("Barbarian village")) {
+            fish.setModel(new DefaultComboBoxModel(new String[] {
+                    "Trout & Salmons",
+                    "Rainbow fishes",
+                    "Pikes",
+                    "Angler fishes"
+            }));
+        }
+        else if (item.contains("Shilo village")) {
+            fish.setModel(new DefaultComboBoxModel(new String[] {
+                    "Trout & Salmons",
+                    "Rainbow fishes",
+                    "Pikes",
+                    "Angler fishes"
+            }));
+        }
+        if (item.contains("Entrana")) {
+            fish.setModel(new DefaultComboBoxModel(new String[] {
+                    "Shrimps & Anchovies",
+                    "Sardines & Herrnigs",
+                    "Trout & Salmons",
+                    "Rainbow fishes",
+                    "Pikes",
+                    "Angler fishes"
+            }));
+        }
+        if (item.contains("Picatoris Fishing Colony")) {
+            fish.setModel(new DefaultComboBoxModel(new String[] {
+                    "Tunas & Swordfishes",
+                    "Monkfishes"
+            }));
+        }
+
     }
-    /*                                    "Lumbridge",
-                                    "Draynor village",
-                                    "Al-Kharid",
-                                    "Catherby",
-                                    "Brimheaven",
-                                    "Karamja",
-                                    "Fishing Guild",
-                                    "Barbarian village",
-                                    "Shilo village",
-                                    "Mudkeeper point",
-                                    "Entrana",
-                                    "Picatoris Fishing Colony"
-                                    */
 
     private void startActionPerformed(ActionEvent e) {
-        // TODO add your code here
+        if (fish.getSelectedItem() == "Shrimps & Anchovies") {
+            Variables.spot = Variables.Shrimp_Spot;
+            Variables.fishID[0] = Variables.Shrimp_ID;
+            Variables.fishID[1] = Variables.Anchovie_ID;
+            Variables.method = "Net";
+            Variables.rodID = Variables.Small_Net_ID;
+        }
+        if (powerfishing.isSelected()) {
+            Variables.powerFishing = true;
+            if (location.getSelectedItem() == "Lumbridge Swamp") {
+                Variables.fishingArea = Variables.Lumbridge_Swamp;
+            }
+        }
+        else {
+            if (location.getSelectedItem().toString().contains("Lumbridge Swamp")) {
+                Variables.bankArea = Variables.Lumbridge_Castle;
+                Variables.fishingArea = Variables.Lumbridge_Swamp;
+                Variables.pathToBank = Variables.Lumbridge_Swamp_To_Castle;
+            }
+        }
+        spot = location.getSelectedItem().toString();
+        name = fish.getSelectedItem().toString();
+        setVisible(false);
+        Fisher.guiWait = false;
     }
 
     private void initComponents() {
@@ -57,8 +151,8 @@ public class GUI extends JFrame {
         location = new JComboBox();
         fish = new JComboBox();
         panel3 = new JPanel();
-        radioButton1 = new JRadioButton();
-        radioButton2 = new JRadioButton();
+        banking = new JRadioButton();
+        powerfishing = new JRadioButton();
         buttonBar = new JPanel();
         start = new JButton();
 
@@ -93,7 +187,7 @@ public class GUI extends JFrame {
 
                             //---- location ----
                             location.setModel(new DefaultComboBoxModel(new String[] {
-                                    "Lumbridge",
+                                    "Lumbridge Swamp",
                                     "Draynor village",
                                     "Al-Kharid",
                                     "Catherby",
@@ -129,11 +223,11 @@ public class GUI extends JFrame {
                                                             .addGroup(panel2Layout.createSequentialGroup()
                                                                     .addComponent(label1)
                                                                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                    .addComponent(location, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
+                                                                    .addComponent(location, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE))
                                                             .addGroup(panel2Layout.createSequentialGroup()
                                                                     .addComponent(label2)
                                                                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                    .addComponent(fish, GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)))
+                                                                    .addComponent(fish, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)))
                                                     .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             );
                             panel2Layout.setVerticalGroup(
@@ -156,12 +250,12 @@ public class GUI extends JFrame {
                         {
                             panel3.setBorder(new TitledBorder(null, "Fishing Method", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION));
 
-                            //---- radioButton1 ----
-                            radioButton1.setText("Banking");
-                            radioButton1.setSelected(true);
+                            //---- banking ----
+                            banking.setText("Banking");
+                            banking.setSelected(true);
 
                             //---- radioButton2 ----
-                            radioButton2.setText("Powerfishing");
+                            powerfishing.setText("Powerfishing");
 
                             GroupLayout panel3Layout = new GroupLayout(panel3);
                             panel3.setLayout(panel3Layout);
@@ -169,16 +263,16 @@ public class GUI extends JFrame {
                                     panel3Layout.createParallelGroup()
                                             .addGroup(panel3Layout.createSequentialGroup()
                                                     .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(radioButton1, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(banking, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
                                                     .addGap(18, 18, 18)
-                                                    .addComponent(radioButton2, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(powerfishing, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE)
                                                     .addGap(14, 14, 14))
                             );
                             panel3Layout.setVerticalGroup(
                                     panel3Layout.createParallelGroup()
                                             .addGroup(panel3Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                    .addComponent(radioButton2)
-                                                    .addComponent(radioButton1))
+                                                    .addComponent(powerfishing)
+                                                    .addComponent(banking))
                             );
                         }
 
@@ -250,8 +344,8 @@ public class GUI extends JFrame {
 
         //---- buttonGroup1 ----
         ButtonGroup buttonGroup1 = new ButtonGroup();
-        buttonGroup1.add(radioButton1);
-        buttonGroup1.add(radioButton2);
+        buttonGroup1.add(banking);
+        buttonGroup1.add(powerfishing);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
@@ -267,8 +361,8 @@ public class GUI extends JFrame {
     private JComboBox location;
     private JComboBox fish;
     private JPanel panel3;
-    private JRadioButton radioButton1;
-    private JRadioButton radioButton2;
+    private JRadioButton banking;
+    private JRadioButton powerfishing;
     private JPanel buttonBar;
     private JButton start;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
