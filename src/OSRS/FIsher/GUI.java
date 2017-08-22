@@ -19,9 +19,7 @@ import javax.swing.border.*;
 /**
  * @author shachar yekutiel
  */
-public class GUI extends JFrame {
-    public static String spot;
-    public static String name;
+class GUI extends JFrame {
     public GUI() {
         initComponents();
     }
@@ -32,10 +30,6 @@ public class GUI extends JFrame {
             fish.setModel(new DefaultComboBoxModel(new String[] {
                     "Shrimps & Anchovies",
                     "Sardines & Herrnigs",
-                    "Trout & Salmons",
-                    "Rainbow fishes",
-                    "Pikes",
-                    "Angler fishes"
             }));
         }
         else if (item.contains("Draynor village")) {
@@ -80,7 +74,7 @@ public class GUI extends JFrame {
         }
         else if (item.contains("Barbarian village")) {
             fish.setModel(new DefaultComboBoxModel(new String[] {
-                    "Trout & Salmons",
+                    "Trouts & Salmons",
                     "Rainbow fishes",
                     "Pikes",
                     "Angler fishes"
@@ -88,7 +82,7 @@ public class GUI extends JFrame {
         }
         else if (item.contains("Shilo village")) {
             fish.setModel(new DefaultComboBoxModel(new String[] {
-                    "Trout & Salmons",
+                    "Trouts & Salmons",
                     "Rainbow fishes",
                     "Pikes",
                     "Angler fishes"
@@ -114,29 +108,72 @@ public class GUI extends JFrame {
     }
 
     private void startActionPerformed(ActionEvent e) {
-        if (fish.getSelectedItem() == "Shrimps & Anchovies") {
-            Variables.spot = Variables.Shrimp_Spot;
-            Variables.fishID[0] = Variables.Shrimp_ID;
-            Variables.fishID[1] = Variables.Anchovie_ID;
-            Variables.method = "Net";
-            Variables.rodID = Variables.Small_Net_ID;
-        }
-        if (powerfishing.isSelected()) {
-            Variables.powerFishing = true;
-            if (location.getSelectedItem() == "Lumbridge Swamp") {
-                Variables.fishingArea = Variables.Lumbridge_Swamp;
+        Variables.powerFishing = powerfishing.isSelected();
+        if (location.getSelectedItem() == "Lumbridge Swamp") {
+            Variables.setLocation(Variables.Lumbridge_Swamp, Variables.Lumbridge_Castle, Variables.Lumbridge_Swamp_To_Castle);
+            Variables.setSpot(Variables.Lumbridge_Spot, Variables.Small_Net_ID);
+            if (fish.getSelectedItem() == "Shrimps & Anchovies") {
+                Variables.addFish(Variables.Shrimp_ID);
+                Variables.addFish(Variables.Anchovie_ID);
+            }
+            else if (fish.getSelectedItem() == "Sardines & Herrnigs") {
+                Variables.addFish(Variables.Sardine_ID);
+                Variables.addFish(Variables.Herring_ID);
             }
         }
-        else {
-            if (location.getSelectedItem().toString().contains("Lumbridge Swamp")) {
-                Variables.bankArea = Variables.Lumbridge_Castle;
-                Variables.fishingArea = Variables.Lumbridge_Swamp;
-                Variables.pathToBank = Variables.Lumbridge_Swamp_To_Castle;
+        else if (location.getSelectedItem() == "Draynor village") {
+            Variables.setLocation(Variables.Draynor, Variables.Draynor_Village, Variables.Draynor_To_Bank);
+            Variables.setSpot(Variables.Draynor_Spot, Variables.Small_Net_ID);
+            if (fish.getSelectedItem() == "Shrimps & Anchovies") {
+                Variables.addFish(Variables.Shrimp_ID);
+                Variables.addFish(Variables.Anchovie_ID);
+            }
+            else if (fish.getSelectedItem() == "Sardines & Herrnigs") {
+                Variables.addFish(Variables.Sardine_ID);
+                Variables.addFish(Variables.Herring_ID);
             }
         }
-        spot = location.getSelectedItem().toString();
-        name = fish.getSelectedItem().toString();
-        setVisible(false);
+        else if (location.getSelectedItem() == "Al-Kharid") {
+            if (fish.getSelectedItem() == "Shrimps & Anchovies") {
+                Variables.addFish(Variables.Shrimp_ID);
+                Variables.addFish(Variables.Anchovie_ID);
+            }
+            else if (fish.getSelectedItem() == "Sardines & Herrnigs") {
+                Variables.addFish(Variables.Sardine_ID);
+                Variables.addFish(Variables.Herring_ID);
+            }
+        }
+        else if (location.getSelectedItem() == "Entrana") {
+            if (fish.getSelectedItem() == "Shrimps & Anchovies") {
+                Variables.addFish(Variables.Shrimp_ID);
+                Variables.addFish(Variables.Anchovie_ID);
+            }
+            else if (fish.getSelectedItem() == "Sardines & Herrnigs") {
+                Variables.addFish(Variables.Sardine_ID);
+                Variables.addFish(Variables.Herring_ID);
+            }
+
+        }
+        else if (location.getSelectedItem() == "Catherby") {
+            if (fish.getSelectedItem() == "Shrimps & Anchovies") {
+                Variables.addFish(Variables.Shrimp_ID);
+                Variables.addFish(Variables.Anchovie_ID);
+            }
+            else if (fish.getSelectedItem() == "Sardines & Herrnigs") {
+                Variables.addFish(Variables.Sardine_ID);
+                Variables.addFish(Variables.Herring_ID);
+            }
+        }
+        else if (location.getSelectedItem() == "Barbarian village")
+        {
+            Variables.setLocation(Variables.BarbarianVillage, Variables.Edge_Bank, Variables.BarbarianVillage_To_EdgeBank);
+            Variables.setSpot(Variables.BarbarianVillage_Spot, Variables.Fly_Fishing_Rod);
+            if (fish.getSelectedItem() == "Trouts & Salmons") {
+                Variables.addFish(Variables.Trout_ID);
+                Variables.addFish(Variables.Salmon_ID);
+            }
+        }
+            setVisible(false);
         Fisher.guiWait = false;
     }
 

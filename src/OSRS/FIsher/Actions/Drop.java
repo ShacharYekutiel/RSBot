@@ -23,6 +23,7 @@ public class Drop extends Task {
         for (Item item : ctx.inventory.select().id(Variables.fishID)) {
             if (item.interact("Drop")) {
                 final int currentCount = ctx.inventory.select().count();
+                Variables.status = "Dropping fishes.";
                 Condition.wait(new Callable<Boolean>() {
                     @Override
                     public Boolean call() throws Exception {

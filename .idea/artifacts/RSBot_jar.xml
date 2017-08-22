@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="RSBot:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/RSBot_jar</output-path>
+    <root id="archive" name="RSBot.jar">
+      <element id="module-output" name="RSBot" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/RSBot.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jagexappletviewer.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

@@ -16,7 +16,6 @@ import java.util.Timer;
 import java.util.concurrent.Callable;
 
 public class Fish extends Task {
-    Variables ids = new Variables();
 
     public Fish(ClientContext arg0) {
         super(arg0);
@@ -29,61 +28,33 @@ public class Fish extends Task {
 
     @Override
     public void execute() {
-        System.out.println("Creating NPC From Spot id");
-        Npc spot = ctx.npcs.select().id(ids.spot).nearest().poll();
-        if (ctx.inventory.select().id(ids.rodID).count() > 0) {
+        Npc spot = ctx.npcs.select().id(Variables.spot).nearest().poll();
+        if (ctx.inventory.select().id(Variables.rodID).count() > 0) {
             if (spot.inViewport()) {
-                System.out.println("Fishing spot is in view.");
                 if (spot.interact(Interacting())) {
-                    System.out.println("Interacting with spot");
+                    Variables.status = "Starting to fish.";
                     Condition.wait(new Callable<Boolean>() {
                         @Override
                         public Boolean call() throws Exception {
-                            System.out.println("Sleeping.");
+                            Variables.status = "Fishing.";
                             return ctx.players.local().animation() != -1;
                         }
                     });
                 }
-            } else {
-                System.out.println("Turning camera to spot.");
+            } else
                 ctx.camera.turnTo(spot);
-            }
-        } else {
-            System.out.print("Can't find fishing tool in your inventory.");
+        } else
             ctx.controller.stop();
-        }
-        /*if (ctx.inventory.select().id(ids.rodID).count() > 0) {
-            System.out.println("Rod is in inventory");
-            if (spot.valid()) {
-                if (spot.inViewport() && Variables.fishingArea.contains(spot.tile())) {
-                    System.out.println("spot is valid");
-                    if (spot.interact(Interacting())) {
-                        System.out.println("Starts fishing");
-                        Condition.wait(new Callable<Boolean>() {
-                            @Override
-                            public Boolean call() throws Exception {
-                                System.out.println("Is Fishing!");
-                                return ctx.players.local().animation() != -1;
-                            }
-                        }, 250, 20);
-                    }
-                }
-                else {
-                    ctx.camera.turnTo(spot);
-                }
-            }
-        }
-        else {
-            System.out.println("You dont have rod in your inventory.");
-            ctx.controller.stop();
-        }*/
     }
 
     public String Interacting() {
         String answer = "";
-        Item item = ctx.inventory.select().poll();
-        if (item.id() == Variables.Small_Net_ID)
-            answer = "Net";
+        for (Item item : ctx.inventory.select().id(Variables.rodID)){
+            if (item.id() == Variables.Small_Net_ID)
+                answer = "Net";
+            else if (item.id() == Variables.Fishing_Rod_ID)
+                answer = "Bait";
+        }
         return answer;
     }
 

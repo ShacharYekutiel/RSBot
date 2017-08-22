@@ -20,12 +20,14 @@ public class Bank extends Task {
     @Override
     public void execute() {
         if (ctx.bank.opened()) {
-            System.out.println("Bank is open depositing");
+            Variables.status = "Depositing fishes.";
             int count = ctx.inventory.select().id(Variables.fishID).count();
-            ctx.bank.deposit(Variables.fishID, count);
+            for (int i : Variables.fishID) {
+                ctx.bank.deposit(i, count);
+            }
         } else {
             if (ctx.bank.inViewport()) {
-                System.out.println("Opening bank");
+                Variables.status = "Opening bank.";
                 ctx.bank.open();
             } else {
                 ctx.camera.turnTo(ctx.bank.nearest());
