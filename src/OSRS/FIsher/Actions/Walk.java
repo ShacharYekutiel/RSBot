@@ -15,18 +15,18 @@ public class Walk extends Task {
 
     @Override
     public boolean activate() {
-        return !Variables.powerFishing && ctx.inventory.select().count() > 27 || (!Variables.powerFishing && ctx.inventory.select().count() < 28 && Variables.pathToBank[0].distanceTo(ctx.players.local()) > 6);
+        return !Variables.powerFishing && ctx.inventory.select().count() > 27 || (!Variables.powerFishing && ctx.inventory.select().count() < 28 && !Variables.fishingArea.contains(ctx.players.local().tile()));
     }
     @Override
     public void execute() {
         if (!ctx.players.local().inMotion() || ctx.movement.destination().equals(Tile.NIL) || ctx.movement.destination().distanceTo(ctx.players.local()) < 5) {
             if (ctx.inventory.select().count() > 27 && !Variables.bankArea.contains(ctx.players.local().tile())) {
                 walker.walkPath(Variables.pathToBank);
-                Variables.status = "Walking to bank.";
+                Variables.status = "Walking to bank";
             }
             else {
                 walker.walkPathReverse(Variables.pathToBank);
-                Variables.status = "Walking to fishing spot.";
+                Variables.status = "Walking to Fishing spot";
             }
         }
 

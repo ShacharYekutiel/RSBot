@@ -1,18 +1,12 @@
 package OSRS.FIsher.Actions;
 
-import OSRS.FIsher.Fisher;
 import OSRS.FIsher.Utils.Task;
 import OSRS.FIsher.Utils.Variables;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.powerbot.script.Condition;
-import org.powerbot.script.MessageEvent;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Item;
 import org.powerbot.script.rt4.Npc;
-import z.P;
-import z.S;
 
-import java.util.Timer;
 import java.util.concurrent.Callable;
 
 public class Fish extends Task {
@@ -32,17 +26,20 @@ public class Fish extends Task {
         if (ctx.inventory.select().id(Variables.rodID).count() > 0) {
             if (spot.inViewport()) {
                 if (spot.interact(Interacting())) {
-                    Variables.status = "Starting to fish.";
+                    Variables.status = "Starts fishing";
                     Condition.wait(new Callable<Boolean>() {
                         @Override
                         public Boolean call() throws Exception {
-                            Variables.status = "Fishing.";
                             return ctx.players.local().animation() != -1;
                         }
                     });
                 }
-            } else
+                Variables.status = "Fishing";
+            }
+            else {
+                Variables.status = "Turning camera to spot";
                 ctx.camera.turnTo(spot);
+            }
         } else
             ctx.controller.stop();
     }
@@ -54,9 +51,9 @@ public class Fish extends Task {
                 answer = "Net";
             else if (item.id() == Variables.Fishing_Rod_ID)
                 answer = "Bait";
+            else if (item.id() == Variables.Fly_Fishing_Rod)
+                answer = "Lure";
         }
         return answer;
     }
-
-    public static boolean cantReach = false;
 }

@@ -167,10 +167,14 @@ class GUI extends JFrame {
         else if (location.getSelectedItem() == "Barbarian village")
         {
             Variables.setLocation(Variables.BarbarianVillage, Variables.Edge_Bank, Variables.BarbarianVillage_To_EdgeBank);
-            Variables.setSpot(Variables.BarbarianVillage_Spot, Variables.Fly_Fishing_Rod);
             if (fish.getSelectedItem() == "Trouts & Salmons") {
                 Variables.addFish(Variables.Trout_ID);
                 Variables.addFish(Variables.Salmon_ID);
+                Variables.setSpot(Variables.BarbarianVillage_Spot, Variables.Fly_Fishing_Rod);
+            }
+            else if (fish.getSelectedItem() == "Pikes") {
+                Variables.addFish(Variables.Pike_ID);
+                Variables.setSpot(Variables.BarbarianVillage_Spot, Variables.Fishing_Rod_ID);
             }
         }
             setVisible(false);

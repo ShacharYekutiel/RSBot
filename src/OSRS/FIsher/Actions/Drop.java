@@ -20,10 +20,26 @@ public class Drop extends Task {
 
     @Override
     public void execute() {
+        boolean shiftDropping = false;
         for (Item item : ctx.inventory.select().id(Variables.fishID)) {
-            if (item.interact("Drop")) {
+            if (ctx.varpbits.varpbit(1055) == 139264)
+                shiftDropping = true;
+            if (shiftDropping) {
+                ctx.input.send("{VK_SHIFT down}");
+                if (item.click()) {
+                    Variables.status = "Dropping";
+                    final int currentCount = ctx.inventory.select().count();
+                    Condition.wait(new Callable<Boolean>() {
+                        @Override
+                        public Boolean call() throws Exception {
+                            return ctx.inventory.select().count() != currentCount;
+                        }
+                    });
+                }
+            }
+            else if (item.interact("Drop")) {
+                Variables.status = "Dropping";
                 final int currentCount = ctx.inventory.select().count();
-                Variables.status = "Dropping fishes.";
                 Condition.wait(new Callable<Boolean>() {
                     @Override
                     public Boolean call() throws Exception {
